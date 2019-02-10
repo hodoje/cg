@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PZ1.VML
+namespace PZ1.ViewModels
 {
-    public class ViewModelLocator
+    public class AddImageViewModel : BindableBase
     {
     }
 }
