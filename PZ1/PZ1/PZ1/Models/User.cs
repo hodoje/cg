@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PZ1.Validation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace PZ1.Models
 {
-    public class User
+    public class User : ValidationBase
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        private string _username { get; set; }
+        private string _password { get; set; }
 
         public User() { }
 
@@ -17,6 +18,63 @@ namespace PZ1.Models
         {
             Username = username;
             Password = password;
+        }
+
+        public string Username
+        {
+            get { return _username; }
+            set
+            {
+                if(_username != value)
+                {
+                    _username = value;
+                    OnPropertyChanged(nameof(Username));
+                }
+            }
+        }
+
+        public string Password
+        {
+            get { return _password; }
+            set
+            {
+                if (_password != value)
+                {
+                    _password = value;
+                    OnPropertyChanged(nameof(Password));
+                }
+            }
+        }
+
+        protected override void ValidateSelf()
+        {
+            if (string.IsNullOrWhiteSpace(Username))
+            {
+                ValidationErrors[nameof(Username)] = "Username cannot be empty.";
+            }
+            else
+            {
+                char firstChar = Username[0];
+                if (Char.IsDigit(firstChar))
+                {
+                    ValidationErrors[nameof(Username)] = "Username cannot start with a number.";
+                }
+
+                if (Username.Length > 30)
+                {
+                    ValidationErrors[nameof(Username)] = "Username can be a maximum of 30 characters long.";
+                }
+            }
+
+            if (Password.Length < 7)
+            {
+                ValidationErrors[nameof(Password)] = "Password needs to be at least 7 characters long.";
+            }
+
+            if(Password.Length > 30)
+            {
+                ValidationErrors[nameof(Password)] = "Password can be a maximum of 30 characters long.";
+            }
         }
     }
 }

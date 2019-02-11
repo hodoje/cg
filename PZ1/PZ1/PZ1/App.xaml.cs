@@ -31,12 +31,12 @@ namespace PZ1
             // Register ViewModels
             var loginViewModel = new LoginViewModel(customXmlRW);
             container.RegisterInstance<LoginViewModel>(loginViewModel);
-            var showImagesViewModel = new ShowImagesViewModel();
-            container.RegisterType<ShowImagesViewModel>();
-            var addImageViewModel = new AddImageViewModel();
-            container.RegisterType<AddImageViewModel>();
-            var accountDetailsViewModel = new AccountDetailsViewModel();
-            container.RegisterType<AccountDetailsViewModel>();
+            var showImagesViewModel = new ImageCollectionViewModel(customXmlRW);
+            container.RegisterInstance<ImageCollectionViewModel>(showImagesViewModel);
+            var addImageViewModel = new AddImageViewModel(customXmlRW);
+            container.RegisterInstance<AddImageViewModel>(addImageViewModel);
+            var accountDetailsViewModel = new AccountDetailsViewModel(customXmlRW);
+            container.RegisterInstance<AccountDetailsViewModel>(accountDetailsViewModel);
             var contentViewModel = new ContentViewModel(container, customXmlRW);
             container.RegisterInstance<ContentViewModel>(contentViewModel);
             var mainWindowViewModel = new MainWindowViewModel(container);

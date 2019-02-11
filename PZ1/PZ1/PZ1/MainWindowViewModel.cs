@@ -52,6 +52,7 @@ namespace PZ1
         private void OnLoggingIn(object source, LoginEventArgs e)
         {
             CurrentViewModel = _contentViewModel;
+            _contentViewModel.UpdateOtherViewModelsUsernameAndPassword(e.Username, e.Password);
         }
 
         // Subscription to LoggingOut event from ContentViewModel
@@ -59,13 +60,14 @@ namespace PZ1
         {
             LoggedOut?.Invoke(this, EventArgs.Empty);
             CurrentViewModel = _loginViewModel;
+            _loginViewModel.LoginRegistrationMessage = "";
         }
 
         // Subscription to Registering event from LoginViewModel
         private void OnRegistering(object source, RegisterEventArgs e)
         {
              CurrentViewModel = _contentViewModel;
-            OnRegistered(e);
+             OnRegistered(e);
         }
 
         // Fire an event that ContentViewModel listens for

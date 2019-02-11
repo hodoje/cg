@@ -6,10 +6,10 @@
              xmlns:views="clr-namespace:PZ1.Views"
              xmlns:viewModels="clr-namespace:PZ1.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="300">
+             d:DesignHeight="500" d:DesignWidth="300">
     <UserControl.Resources>
-        <DataTemplate DataType="{x:Type viewModels:ShowImagesViewModel}">
-            <views:ShowImagesView/>
+        <DataTemplate DataType="{x:Type viewModels:ImageCollectionViewModel}">
+            <views:ImageCollectionView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:AddImageViewModel}">
             <views:AddImageView/>

@@ -19,11 +19,20 @@
         <Grid Grid.Row="1" >
             <Label Content="Username:" FontSize="16" HorizontalAlignment="Left" Margin="50,10,0,0" VerticalAlignment="Top" Width="90" Foreground="White"/>
             <Label Content="Password:" FontSize="16" HorizontalAlignment="Left" Margin="50,80,0,0" VerticalAlignment="Top" Width="90" Foreground="White"/>
-            <TextBox Text="{Binding Username}" HorizontalAlignment="Left" Height="30" Margin="50,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" FontSize="16"/>
-            <TextBox Text="{Binding Password}" HorizontalAlignment="Left" Height="30" Margin="50,110,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
-            <Button Content="Log In" FontSize="16" Command="{Binding LoginCommand}" HorizontalAlignment="Left" Margin="50,160,0,0" VerticalAlignment="Top" Width="200" Height="30" Background="DarkGreen" Foreground="White" BorderBrush="DarkGreen"/>
+            <TextBox Text="{Binding Username, 
+                                    UpdateSourceTrigger=PropertyChanged,
+                                    Mode=TwoWay}" 
+                     HorizontalAlignment="Left" Height="30" Margin="50,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" FontSize="16"/>
+            <TextBox Text="{Binding Password, 
+                                    UpdateSourceTrigger=PropertyChanged,
+                                    Mode=TwoWay}" 
+                     HorizontalAlignment="Left" Height="30" Margin="50,110,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
+            <Label Content="{Binding LoginUser.ValidationErrors[Username], UpdateSourceTrigger=PropertyChanged}" Foreground="Red" FontWeight="ExtraBold" FontSize="11" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="300" Margin="0,70,0,0"/>
+            <Label Content="{Binding LoginUser.ValidationErrors[Password], UpdateSourceTrigger=PropertyChanged}" Foreground="Red" FontWeight="ExtraBold" FontSize="11" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="300" Margin="0,140,0,0"/>
+            <Button Content="Log In" IsDefault="True" FontSize="16" Command="{Binding LoginCommand}" HorizontalAlignment="Left" Margin="50,170,0,0" VerticalAlignment="Top" Width="200" Height="30" Background="DarkGreen" Foreground="LightGray" BorderBrush="DarkGreen"/>
+            <Label Content="{Binding LoginRegistrationMessage}" Foreground="Red" FontWeight="ExtraBold" FontSize="11" Margin="0,200,0,0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="300"/>
             <Label Content="Don't have an account?" HorizontalAlignment="Left" Margin="85,250,0,0" VerticalAlignment="Top" Foreground="White" Width="135"/>
-            <Button Content="Register" FontSize="16" Command="{Binding RegisterCommand}" HorizontalAlignment="Left" Margin="50,280,0,0" VerticalAlignment="Top" Width="200" Height="30" Foreground="White" Background="#FF0096FF" BorderBrush="#FF0096FF"/>
+            <Button Content="Register" FontSize="16" Command="{Binding RegisterCommand}" HorizontalAlignment="Left" Margin="50,280,0,0" VerticalAlignment="Top" Width="200" Height="30" Foreground="LightGray" Background="#FF0096FF" BorderBrush="#FF0096FF"/>
         </Grid>
     </Grid>
 </UserControl>

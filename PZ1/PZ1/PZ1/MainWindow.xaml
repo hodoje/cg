@@ -7,7 +7,7 @@
         xmlns:views="clr-namespace:PZ1.Views"
         xmlns:viewModels="clr-namespace:PZ1.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="315" Background="#FF464646"
+        Title="MainWindow" Height="500" Width="315" Background="#7F646464"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
@@ -22,15 +22,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
-        <!--<DockPanel Grid.Row="0" Margin="5">
-            <Menu DockPanel.Dock="Top">
-                <MenuItem Header="Login" Command="{Binding NavCommand}"
-                          CommandParameter="login"/>
-                <MenuItem Header="Content" Command="{Binding NavCommand}"
-                          CommandParameter="content"/>
-            </Menu>
-        </DockPanel>-->
         <Grid Grid.Row="0" HorizontalAlignment="Left">
             <ContentControl Content="{Binding CurrentViewModel}"/>
         </Grid>

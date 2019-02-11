@@ -29,7 +29,7 @@ namespace PZ1.Xml
                     stream.Position = 0;
                     xmlDocument.Load(stream);
                     xmlDocument.Save(fileName);
-                    stream.Close();
+                    //stream.Close();
                 }
             }
             catch (Exception ex)
@@ -66,8 +66,7 @@ namespace PZ1.Xml
                         objectOut = (T)serializer.Deserialize(reader);
                         reader.Close();
                     }
-
-                    read.Close();
+                    //read.Close();
                 }
             }
             catch (Exception ex)

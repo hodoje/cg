@@ -17,22 +17,38 @@ namespace PZ1.ViewModels
         private CustomXmlRW _customXmlRW;
         private string _usersFilename;
 
+        public User LoginUser { get; set; }
         private string _username;
         private string _password;
+        private string _loginRegisterMessage;
 
         public string Username
         {
             get { return _username; }
-            set { SetField<string>(ref _username, value); }
+            set
+            {
+                SetField<string>(ref _username, value);
+                LoginCommand.RaiseCanExecuteChanged();
+                RegisterCommand.RaiseCanExecuteChanged();
+            }
         }
 
         public string Password
         {
             get { return _password; }
-            set { SetField<string>(ref _password, value); }
+            set
+            {
+                SetField<string>(ref _password, value);
+                LoginCommand.RaiseCanExecuteChanged();
+                RegisterCommand.RaiseCanExecuteChanged();
+            }
         }
 
-        public Dictionary<string, User> Users { get; set; }
+        public string LoginRegistrationMessage
+        {
+            get { return _loginRegisterMessage; }
+            set { SetField<string>(ref _loginRegisterMessage, value); }
+        }
 
         public MyICommand LoginCommand { get; private set; }        
 
@@ -55,39 +71,79 @@ namespace PZ1.ViewModels
             string projectDirectory = Directory.GetParent(workingDirectory).Parent.FullName;
             _usersFilename = ConfigurationManager.AppSettings["usersFile"];
             _usersFilename = _usersFilename.Replace("{AppDir}", projectDirectory);
+
+            // Handle empty users file
             var users = _customXmlRW.DeSerializeObject<List<User>>(_usersFilename);
             if(users == null)
             {
-                Users = new Dictionary<string, User>();
-                _customXmlRW.SerializeObject<List<User>>(Users.Values.ToList(), _usersFilename);
-            }
-            else
-            {
-                Users = users.ToDictionary(u => u.Username, u => u);
+                users = new List<User>();
+                _customXmlRW.SerializeObject<List<User>>(users, _usersFilename);
             }
 
-            LoginCommand = new MyICommand(OnLoggingIn);
-            RegisterCommand = new MyICommand(OnRegistering);
+            LoginCommand = new MyICommand(OnLoggingIn, LogInCanExecute);
+            RegisterCommand = new MyICommand(OnRegistering, RegisterCanExecute);
+
+            LoginUser = new User();
         }
 
         protected virtual void OnLoggingIn()
         {
-            User loginUser = new User(Username, Password);
-            if (CheckIfExists(loginUser))
+            LoginRegistrationMessage = "";
+            LoginUser.Username = Username;
+            LoginUser.Password = Password;
+            LoginUser.Validate();
+            if (LoginUser.IsValid)
             {
-                LoggingIn?.Invoke(this, new LoginEventArgs(Username, Password));
+                if (CheckIfExists(LoginUser))
+                {
+                    LoggingIn?.Invoke(this, new LoginEventArgs(Username, Password));
+                }
+                else
+                {
+                    LoginRegistrationMessage = "User with these credentials does not exist.";
+                    return;
+                }
             }
+        }
+
+        private bool LogInCanExecute()
+        {
+            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
+            {
+                return false;
+            }
+            return true;
         }
 
         protected virtual void OnRegistering()
         {
-            User registeringUser = new User(Username, Password);
-            if (!CheckIfExists(registeringUser))
+            LoginRegistrationMessage = "";
+            LoginUser.Username = Username;
+            LoginUser.Password = Password;
+            LoginUser.Validate();
+            if (LoginUser.IsValid)
             {
-                Users.Add(registeringUser.Username, registeringUser);
-                _customXmlRW.SerializeObject<List<User>>(Users.Values.ToList(), _usersFilename);
-                Registering?.Invoke(this, new RegisterEventArgs(Username, Password));
+                if (!CheckIfExists(LoginUser))
+                {
+                    var users = _customXmlRW.DeSerializeObject<List<User>>(_usersFilename);
+                    users.Add(LoginUser);
+                    _customXmlRW.SerializeObject<List<User>>(users, _usersFilename);
+                    Registering?.Invoke(this, new RegisterEventArgs(Username, Password));
+                }
+                else
+                {
+                    LoginRegistrationMessage = "User with these credentials already exists.";                    
+                }
             }
+        }
+
+        private bool RegisterCanExecute()
+        {
+            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
+            {
+                return false;
+            }
+            return true;
         }
 
         // Subscription to LoggedOut event from MainWindowViewModel
@@ -96,16 +152,26 @@ namespace PZ1.ViewModels
         {
             Username = "";
             Password = "";
-            Console.WriteLine("Logged out.");
         }
 
         private bool CheckIfExists(User user)
         {
+            bool result = false;
             if(!string.IsNullOrWhiteSpace(user.Username))
             {
-                return Users.Count > 0 ? Users.TryGetValue(user.Username, out User u) : false;
+                var users = _customXmlRW.DeSerializeObject<List<User>>(_usersFilename);
+                if(users != null)
+                {
+                    if (users.Count > 0)
+                    {
+                        if (users.Any(u => u.Username == user.Username && u.Password == user.Password))
+                        {
+                            result = true;
+                        }
+                    }
+                }
             }
-            return false;
+            return result;
         }
     }
 }

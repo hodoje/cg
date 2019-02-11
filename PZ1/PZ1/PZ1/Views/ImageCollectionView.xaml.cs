@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace PZ1.Views
 {
     /// <summary>
-    /// Interaction logic for ShowImagesView.xaml
+    /// Interaction logic for ImageCollectionView.xaml
     /// </summary>
-    public partial class ShowImagesView : UserControl
+    public partial class ImageCollectionView : UserControl
     {
-        public ShowImagesView()
+        public ImageCollectionView()
         {
             InitializeComponent();
         }

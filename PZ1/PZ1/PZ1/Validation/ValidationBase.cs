@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace PZ1.Validation
 {
     public abstract class ValidationBase : BindableBase
     {
+        [XmlIgnore]
         public ValidationErrors ValidationErrors { get; set; }
+        [XmlIgnore]
         public bool IsValid { get; private set; }
 
         protected ValidationBase()
