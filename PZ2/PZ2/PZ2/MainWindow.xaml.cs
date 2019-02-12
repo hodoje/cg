@@ -10,7 +10,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -45,7 +44,7 @@ namespace PZ2
             // Lets the user drag the map
             gmap.CanDragMap = true;
             // Lets the user drag the map with the left mouse button
-            gmap.DragButton = (System.Windows.Forms.MouseButtons)MouseButton.Left;
+            gmap.DragButton = System.Windows.Forms.MouseButtons.Left;
             // Centers the map on Novi Sad
             double blX = 45.2325;
             double blY = 19.793909;
