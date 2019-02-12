@@ -41,7 +41,7 @@ GMap is created as a WindowsForms control, so in order to be used in WPF applica
     - this is used for usage of WindowsFormsHost tag
 
 In the end, the window hierarchy should look like this:
-  //Window stuff//
-    <Grid>
-      <WindowsFormsHost>
-        <gmf:GMapControl>
+  - Window stuff
+     - `<Grid>`
+        - `<WindowsFormsHost>`
+           - `<gmf:GMapControl>`
