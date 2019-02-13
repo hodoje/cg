@@ -8,10 +8,11 @@
         xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         xmlns:local="clr-namespace:PZ2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="500" Width="800">
     <Grid>
-        <WindowsFormsHost>
+        <WindowsFormsHost Margin="0,35,0,0">
             <gmf:GMapControl x:Name="gmap" Load="Gmap_Load"></gmf:GMapControl>
         </WindowsFormsHost>
+        <Button Content="Load Markers" FontSize="22" Foreground="White" Background="Green" VerticalAlignment="Top" Margin="0,0,0,0" Click="LoadMarkers_Click" Height="35"/>
     </Grid>
 </Window>

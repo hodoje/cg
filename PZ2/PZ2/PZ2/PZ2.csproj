@@ -43,6 +43,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -63,6 +64,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="UTMToLatLonConverter.cs" />
+    <Compile Include="Xml\CustomXmlRW.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -77,6 +80,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\LineEntity.cs" />
+    <Compile Include="Models\NetworkModel.cs" />
+    <Compile Include="Models\NodeEntity.cs" />
+    <Compile Include="Models\Point.cs" />
+    <Compile Include="Models\SubstationEntity.cs" />
+    <Compile Include="Models\SwitchEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -101,6 +110,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
