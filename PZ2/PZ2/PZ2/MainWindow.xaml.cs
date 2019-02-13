@@ -28,6 +28,7 @@ namespace PZ2
     {
         private NetworkModel NetworkModel { get; set; }        
         private CustomXmlRW CustomXmlRW = new CustomXmlRW();
+        private bool IsDataLoaded { get; set; }
         private GMapOverlay Markers { get; set; }
         private GMapOverlay Routes { get; set; }
 
@@ -35,6 +36,7 @@ namespace PZ2
         {
             Markers = new GMapOverlay("markers");
             Routes = new GMapOverlay("routes");
+            IsDataLoaded = false;
             ReadXmlAndConvertTemplate();
             InitializeComponent();
         }
@@ -75,6 +77,7 @@ namespace PZ2
             await readXmlTask.ContinueWith(antecedent =>
             {
                 ConvertUTMToDecimalAndAddMarkers();
+                IsDataLoaded = true;
             });
         }
 
@@ -136,12 +139,15 @@ namespace PZ2
 
         private void LoadMarkers_Click(object sender, RoutedEventArgs e)
         {
-            if(gmap.Overlays.Count > 0)
+            if (IsDataLoaded)
             {
-                gmap.Overlays.Clear();
+                if (gmap.Overlays.Count > 0)
+                {
+                    gmap.Overlays.Clear();
+                }
+                gmap.Overlays.Add(Markers);
+                gmap.Overlays.Add(Routes);
             }
-            gmap.Overlays.Add(Markers);
-            gmap.Overlays.Add(Routes);
         }
     }
 }
