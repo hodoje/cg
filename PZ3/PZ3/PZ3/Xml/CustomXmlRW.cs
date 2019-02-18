@@ -34,7 +34,7 @@ namespace PZ3.Xml
             catch (Exception ex)
             {
                 // Log exception here
-                // throw ex;
+                throw ex;
             }
         }
 
@@ -69,7 +69,7 @@ namespace PZ3.Xml
             catch (Exception ex)
             {
                 // Log exception here
-                // throw ex;
+                throw ex;
             }
 
             return objectOut;

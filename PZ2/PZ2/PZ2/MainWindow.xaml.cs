@@ -88,7 +88,7 @@ namespace PZ2
 
         public void ConvertUTMToDecimalAndAddMarkers()
         {
-            foreach(var substation in NetworkModel.Substations)
+            foreach (var substation in NetworkModel.Substations)
             {
                 UTMToLatLonConverter.ToLatLon(substation.X, substation.Y, 34, out double latitude, out double longitude);
                 substation.X = longitude;
@@ -99,7 +99,7 @@ namespace PZ2
                 Markers.Markers.Add(marker);
             }
 
-            foreach(var node in NetworkModel.Nodes)
+            foreach (var node in NetworkModel.Nodes)
             {
                 UTMToLatLonConverter.ToLatLon(node.X, node.Y, 34, out double latitude, out double longitude);
                 node.X = longitude;
@@ -121,7 +121,7 @@ namespace PZ2
                 Markers.Markers.Add(marker);
             }
 
-            foreach(var line in NetworkModel.Lines)
+            foreach (var line in NetworkModel.Lines)
             {
                 List<PointLatLng> points = new List<PointLatLng>();
                 foreach (var point in line.Vertices)
