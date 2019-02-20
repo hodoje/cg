@@ -31,6 +31,11 @@ namespace PZ3
         public List<SubstationEntity> Substations { get; set; }
         public List<NodeEntity> Nodes { get; set; }
         public List<SwitchEntity> Switches { get; set; }
+        public List<Tuple<Line, Line>> DrawnLines { get; set; }
+        // LineEntity is the line in NetworkModel.Lines
+        // First Line is the first part of the line - horizontal
+        // Second Line is the second part of the line - vertical
+        public List<Tuple<LineEntity, Line, Line>> NonModifiedLines { get; set; }
         public bool IsDataLoaded { get; set; }
         private int _singleTileSize = 1;
         private double _ellipseWidth = 1.0;
@@ -49,6 +54,8 @@ namespace PZ3
             Substations = new List<SubstationEntity>();
             Nodes = new List<NodeEntity>();
             Switches = new List<SwitchEntity>();
+            DrawnLines = new List<Tuple<Line, Line>>();
+            NonModifiedLines = new List<Tuple<LineEntity, Line, Line>>();
             IsDataLoaded = false;
             ReadXmlAndConvertAndFindMinimalsAndMaximalsTemplate();
             InitializeComponent();
@@ -160,14 +167,8 @@ namespace PZ3
             y = GridCanvas.Height * moveY;
         }
 
-        public void LoadGrid_Handler(object source, EventArgs e)
+        public void DrawSubstations()
         {
-            if(GridCanvas.Children.Count > 0)
-            {
-                GridCanvas.Children.Clear();
-
-            }
-
             foreach (var substation in NetworkModel.Substations)
             {
                 Ellipse el = new Ellipse();
@@ -198,87 +199,6 @@ namespace PZ3
                     Canvas.SetBottom(el, newPoint.Y);
                     GridCanvas.Children.Add(el);
                     Substations.Add(substation);
-                    //GridPoint newPoint;
-                    //if ((newPoint = CheckIfCanPlaceRight(point)) != null)
-                    //{
-                    //    substation.X = newPoint.X;
-                    //    substation.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Substations.Add(substation);
-                    //}
-                    //else if ((newPoint = CheckIfCanPlaceLeft(point)) != null)
-                    //{
-                    //    substation.X = newPoint.X;
-                    //    substation.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Substations.Add(substation);
-                    //}
-                    //else if ((newPoint = CheckIfCanPlaceUp(point)) != null)
-                    //{
-                    //    substation.X = newPoint.X;
-                    //    substation.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Substations.Add(substation);
-                    //}
-                    //else if ((newPoint = CheckIfCanPlaceDown(point)) != null)
-                    //{
-                    //    substation.X = newPoint.X;
-                    //    substation.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Substations.Add(substation);
-                    //}
-                    //else if ((newPoint = CheckIfCanPlaceUpperLeft(point)) != null)
-                    //{
-                    //    substation.X = newPoint.X;
-                    //    substation.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Substations.Add(substation);
-                    //}
-                    //else if ((newPoint = CheckIfCanPlaceUpperRight(point)) != null)
-                    //{
-                    //    substation.X = newPoint.X;
-                    //    substation.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Substations.Add(substation);
-                    //}
-                    //else if ((newPoint = CheckIfCanPlaceBottomLeft(point)) != null)
-                    //{
-                    //    substation.X = newPoint.X;
-                    //    substation.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Substations.Add(substation);
-                    //}
-                    //else if ((newPoint = CheckIfCanPlaceBottomRight(point)) != null)
-                    //{
-                    //    substation.X = newPoint.X;
-                    //    substation.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Substations.Add(substation);
-                    //}
                 }
                 else
                 {
@@ -291,13 +211,16 @@ namespace PZ3
                     Substations.Add(substation);
                 }
             }
+        }
 
+        public void DrawNodes()
+        {
             foreach (var node in NetworkModel.Nodes)
             {
                 Ellipse el = new Ellipse();
                 el.Width = _ellipseWidth;
                 el.Height = _ellipseHeight;
-                el.StrokeThickness = 0;                
+                el.StrokeThickness = 0;
                 el.Fill = Brushes.Red;
                 el.ToolTip = $"Node Id:{node.Id}, Node Name:{node.Name}\nXCoord:{node.X}, YCoord:{node.Y}";
                 ConvertLatLongToLocalCoordinates(node.X, node.Y, out double x, out double y);
@@ -322,88 +245,6 @@ namespace PZ3
                     Canvas.SetBottom(el, newPoint.Y);
                     GridCanvas.Children.Add(el);
                     Nodes.Add(node);
-
-                    //GridPoint newPoint;
-                    //if ((newPoint = CheckIfCanPlaceRight(point)) != null)
-                    //{
-                    //    node.X = newPoint.X;
-                    //    node.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Nodes.Add(node);
-                    //}
-                    //else if ((newPoint = CheckIfCanPlaceLeft(point)) != null)
-                    //{
-                    //    node.X = newPoint.X;
-                    //    node.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Nodes.Add(node);
-                    //}
-                    //else if ((newPoint = CheckIfCanPlaceUp(point)) != null)
-                    //{
-                    //    node.X = newPoint.X;
-                    //    node.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Nodes.Add(node);
-                    //}
-                    //else if ((newPoint = CheckIfCanPlaceDown(point)) != null)
-                    //{
-                    //    node.X = newPoint.X;
-                    //    node.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Nodes.Add(node);
-                    //}
-                    //else if ((newPoint = CheckIfCanPlaceUpperLeft(point)) != null)
-                    //{
-                    //    node.X = newPoint.X;
-                    //    node.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Nodes.Add(node);
-                    //}
-                    //else if ((newPoint = CheckIfCanPlaceUpperRight(point)) != null)
-                    //{
-                    //    node.X = newPoint.X;
-                    //    node.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Nodes.Add(node);
-                    //}
-                    //else if ((newPoint = CheckIfCanPlaceBottomLeft(point)) != null)
-                    //{
-                    //    node.X = newPoint.X;
-                    //    node.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Nodes.Add(node);
-                    //}
-                    //else if ((newPoint = CheckIfCanPlaceBottomRight(point)) != null)
-                    //{
-                    //    node.X = newPoint.X;
-                    //    node.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Nodes.Add(node);
-                    //}
                 }
                 else
                 {
@@ -416,7 +257,10 @@ namespace PZ3
                     Nodes.Add(node);
                 }
             }
+        }
 
+        public void DrawSwitches()
+        {
             foreach (var sw in NetworkModel.Switches)
             {
                 Ellipse el = new Ellipse();
@@ -432,7 +276,7 @@ namespace PZ3
 
                 var point = GridPoints[Tuple.Create<int, int>((int)roundedX, (int)roundedY)];
 
-                if(point.Taken)
+                if (point.Taken)
                 {
                     int pixelDistance = 1;
                     GridPoint newPoint;
@@ -447,88 +291,6 @@ namespace PZ3
                     Canvas.SetBottom(el, newPoint.Y);
                     GridCanvas.Children.Add(el);
                     Switches.Add(sw);
-
-                    //GridPoint newPoint;
-                    //if ((newPoint = CheckIfCanPlaceRight(point)) != null)
-                    //{
-                    //    sw.X = newPoint.X;
-                    //    sw.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Switches.Add(sw);
-                    //}
-                    //else if ((newPoint = CheckIfCanPlaceLeft(point)) != null)
-                    //{
-                    //    sw.X = newPoint.X;
-                    //    sw.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Switches.Add(sw);
-                    //}
-                    //else if ((newPoint = CheckIfCanPlaceUp(point)) != null)
-                    //{
-                    //    sw.X = newPoint.X;
-                    //    sw.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Switches.Add(sw);
-                    //}
-                    //else if ((newPoint = CheckIfCanPlaceDown(point)) != null)
-                    //{
-                    //    sw.X = newPoint.X;
-                    //    sw.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Switches.Add(sw);
-                    //}
-                    //else if((newPoint = CheckIfCanPlaceUpperLeft(point)) != null)
-                    //{
-                    //    sw.X = newPoint.X;
-                    //    sw.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Switches.Add(sw);
-                    //}
-                    //else if((newPoint = CheckIfCanPlaceUpperRight(point)) != null)
-                    //{
-                    //    sw.X = newPoint.X;
-                    //    sw.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Switches.Add(sw);
-                    //}
-                    //else if((newPoint = CheckIfCanPlaceBottomLeft(point)) != null)
-                    //{
-                    //    sw.X = newPoint.X;
-                    //    sw.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Switches.Add(sw);
-                    //}
-                    //else if((newPoint = CheckIfCanPlaceBottomRight(point)) != null)
-                    //{
-                    //    sw.X = newPoint.X;
-                    //    sw.Y = newPoint.Y;
-                    //    newPoint.Taken = true;
-                    //    Canvas.SetLeft(el, newPoint.X);
-                    //    Canvas.SetBottom(el, newPoint.Y);
-                    //    GridCanvas.Children.Add(el);
-                    //    Switches.Add(sw);
-                    //}
                 }
                 else
                 {
@@ -541,7 +303,11 @@ namespace PZ3
                     Switches.Add(sw);
                 }
             }
+        }
 
+        public void DrawLines()
+        {
+            // BFS variation, instead of using graphs, we use lists
             GridPoint startNode = new GridPoint();
             GridPoint endNode = new GridPoint();
 
@@ -600,14 +366,14 @@ namespace PZ3
                 // When both nodes are found, draw a line in right angle
                 if (startNode != null && endNode != null)
                 {
-                    Line l = new Line();
-                    l.Stroke = new SolidColorBrush(Colors.HotPink);
-                    l.StrokeThickness = 0.5;
-                    l.X1 = startNode.X;
-                    l.Y1 = GridCanvas.Height - startNode.Y;
-                    l.X2 = endNode.X;
-                    l.Y2 = GridCanvas.Height - startNode.Y;
-                    GridCanvas.Children.Add(l);
+                    Line l1 = new Line();
+                    l1.Stroke = new SolidColorBrush(Colors.HotPink);
+                    l1.StrokeThickness = 0.5;
+                    l1.X1 = startNode.X;
+                    l1.Y1 = GridCanvas.Height - startNode.Y;
+                    l1.X2 = endNode.X;
+                    l1.Y2 = GridCanvas.Height - startNode.Y;
+                    GridCanvas.Children.Add(l1);
 
                     Line l2 = new Line();
                     l2.Stroke = new SolidColorBrush(Colors.HotPink);
@@ -615,12 +381,27 @@ namespace PZ3
                     l2.X1 = endNode.X;
                     l2.Y1 = GridCanvas.Height - startNode.Y;
                     l2.X2 = endNode.X;
-                    l2.Y2 = GridCanvas.Height - endNode.Y;
+                    l2.Y2 = GridCanvas.Height - endNode.Y; 
                     GridCanvas.Children.Add(l2);
                 }
             }
+        }
 
-            var a = GridCanvas.Children.Count;
+        public void LoadGrid_Handler(object source, EventArgs e)
+        {
+            if (IsDataLoaded)
+            {
+                if (GridCanvas.Children.Count > 0)
+                {
+                    GridCanvas.Children.Clear();
+
+                }
+                DrawSubstations();
+                DrawNodes();
+                DrawSwitches();
+                DrawLines();
+                
+            }
         }
 
         public GridPoint CheckIfCanPlace(GridPoint point, int pixelDistance)
