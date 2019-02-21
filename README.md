@@ -46,7 +46,7 @@ In the end, the window hierarchy should look like this:
         - `<WindowsFormsHost>`
            - `<gmf:GMapControl>`
            
-**Third assignment translation**
+**PZ3 assignment translation**
 
 The goal of third subject assignment is to draw a graph of a power network.
 
@@ -79,3 +79,24 @@ Example: https://dzone.com/articles/breadth-first-search-c.
 **Network graph**
 <br/>
 ![Modules](https://i.imgur.com/92elubT.png)
+
+**PZ4 assignment translation**
+
+The goal of fourth subject assignment is putting power grid elements on a 3D map. Map needs to be set up as a 2D image - plate at the bottom of the scene.
+
+Objects will be put at appropriate coordinates on the map. Bottom left corner of the map has coordinates lat: 45.2325, lon: 19.793909 and top right corner has lat: 45.277031, lon: 19.894459. All nodes outside this boundary should be ignored. It's necessary to calculate the relative movement of one degree in 3D scene using width and hight of the plate with the image.
+
+It's necessary to implement functionality where on left mouse button, map can be moved (pan) or zoom uzing scroll wheel. Independent of zoom level, objects need to stay on their coordinates. Scene should be able to rotate freely around its center when mouse is moved while scroll wheel is pressed.
+
+Objects added to the map need to have supported *hit testing* in a way that information about that object can be shown in the form of tooltip or in some simillar way, near the cursor. Zoom and pan objects need to be done outside geographical coordinates - everythin is x,y,z space. Power lines need to be drawn using triangles. **This assignment as is, is worth 15 points. For the rest of 5 points, it's necessary to do something of the following: (I'VE GOT NUMBER 4):**
+    -**Extra assignment 1:** Enable show/hide of all power lines on the map.
+    -**Extra assignment 2:** Switches need to be colored in red if they are "closed" and in green if they're "opened".
+    -**Extra assignment 3:** Enable a choice of show/hide of substations/nodes/switches on the map.
+    -**Extra assignment 4:** Power lines are drawn in different colors, based on material type from which the line is made of.
+    -**Extra assignment 5:** Enable show/hide of all objects (except power lines) based on number of connections: first option - 0-3 connections, second option - 3-5 connections, third option - more than 5 connections.
+    -**Extra assignment 6:** Power lines are drawn in different colors based on their resistance: first option - 0-1 R, second option - 1-2 R; third option - R larger than 2.
+    -**Extra assignment 7:** Enable show/hide of power lines based on their resistance: first option - 0-1 R, second option - 1-2 R,
+    third option - R larger than 2.
+    -**Extra assignment 8:** Objects (except lines) draw in different color intensity based on number of connections: 0-3 connections - ligth red, 3-5 connections - red, more than 5 connections - intensive red.
+    -**Extra assignment 9:** On power lines that break, make up for it in points of breakage, so the line stays full and without breaks.
+    -**Extra assignment 10:** At the place where substations/nodes/switches overlap, draw them one above the other.
