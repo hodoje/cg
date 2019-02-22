@@ -55,6 +55,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Enums\ColorEnum.cs" />
+    <Compile Include="Enums\EntityTypeEnum.cs" />
+    <Compile Include="Enums\PowerLineConductingMaterial.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="UTMToLatLonConverter.cs" />
     <Compile Include="Xml\CustomXmlRW.cs" />
     <Page Include="MainWindow.xaml">
@@ -71,7 +75,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\GridPoint.cs" />
     <Compile Include="Models\LineEntity.cs" />
     <Compile Include="Models\NetworkModel.cs" />
     <Compile Include="Models\NodeEntity.cs" />

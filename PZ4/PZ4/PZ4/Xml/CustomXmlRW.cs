@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace PZ3.Xml
+namespace PZ4.Xml
 {
     public class CustomXmlRW
     {

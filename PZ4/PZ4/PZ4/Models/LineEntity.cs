@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PZ2.Models
+namespace PZ4.Models
 {
     public class LineEntity
     {
@@ -12,7 +12,7 @@ namespace PZ2.Models
         public string Name { get; set; }
         public bool IsUnderground { get; set; }
         public double R { get; set; }
-        public string ConductingMaterial { get; set; }
+        public string ConductorMaterial { get; set; }
         public string LineType { get; set; }
         public double ThermalConstantHeat { get; set; }
         public double FirstEnd { get; set; }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PZ2.Models
+namespace PZ4.Models
 {
     public class NetworkModel
     {
