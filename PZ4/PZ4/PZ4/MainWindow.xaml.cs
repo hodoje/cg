@@ -69,6 +69,16 @@ namespace PZ4
 
         private void LoadMap_Click(object sender, RoutedEventArgs e)
         {
+            // If models are already loaded, clear all models, but save the map front and map back and reset
+            if(AllModelsGroup.Children.Count > 2)
+            {
+                var mapFront = MapFront;
+                var mapBack = MapBack;
+                AllModelsGroup.Children.Clear();
+                AllModelsGroup.Children.Add(mapFront);
+                AllModelsGroup.Children.Add(mapBack);
+            }
+
             if (_isDataLoaded)
             {
                 DrawSubstations();
@@ -158,7 +168,7 @@ namespace PZ4
         #region MouseEvents
         private void Viewport_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ToolTipTextBlock.Visibility = Visibility.Hidden;
+            ToolTipTextBlock.Text = "";
 
             Viewport.CaptureMouse();
             _start = e.GetPosition(this);
@@ -185,7 +195,7 @@ namespace PZ4
 
         private void Viewport_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.RightButton == MouseButtonState.Pressed)
+            if (e.MiddleButton == MouseButtonState.Pressed)
             {
                 _startPosition = e.GetPosition(this);
             }
@@ -194,7 +204,7 @@ namespace PZ4
         private void Viewport_MouseMove(object sender, MouseEventArgs e)
         {
             System.Windows.Point currentPosition = e.GetPosition(this);
-            if (e.RightButton == MouseButtonState.Pressed)
+            if (e.MiddleButton == MouseButtonState.Pressed)
             {
                 // Offset that tells us the direction of movement by X and Y axes
                 double offsetX = currentPosition.X - _startPosition.X;
@@ -223,26 +233,15 @@ namespace PZ4
 
         private void Viewport_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            //System.Windows.Point p = e.MouseDevice.GetPosition(this);
-            //double scaleX = 1;
-            //double scaleY = 1;
             if (e.Delta > 0 && _zoomCurrent < _zoomMax)
             {
-                //scaleX = scaling.ScaleX + 0.1;
-                //scaleY = scaling.ScaleY + 0.1;
                 _zoomCurrent++;
                 Camera.FieldOfView--;
-                //scaling.ScaleX = scaleX;
-                //scaling.ScaleY = scaleY;
             }
             else if (e.Delta <= 0 && _zoomCurrent > -_zoomMax)
             {
-                //scaleX = scaling.ScaleX - 0.1;
-                //scaleY = scaling.ScaleY - 0.1;
                 _zoomCurrent--;
                 Camera.FieldOfView++;
-                //scaling.ScaleX = scaleX;
-                //scaling.ScaleY = scaleY;
             }
         }
         #endregion
@@ -458,7 +457,6 @@ namespace PZ4
                     {
                         _hitGeoModel = (GeometryModel3D)rayResult.ModelHit;
                         gasit = true;
-                        ToolTipTextBlock.Visibility = Visibility.Visible;
                         ToolTipTextBlock.Text = pair.Value;
                     }
                 }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PZ4"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="800" WindowStartupLocation="CenterScreen">
-    <Grid Background="WhiteSmoke">
+    <Grid Background="LightGray">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
@@ -15,7 +15,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Grid.Column="1">
+        <StackPanel Grid.Row="0" Grid.Column="1" Background="WhiteSmoke">
             <Button VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalAlignment="Left" Content="Load Map" Height="35" Width="110" Margin="10,5,0,0" Background="DarkGreen" Foreground="White" Click="LoadMap_Click"/>
             <Label VerticalAlignment="Top" HorizontalAlignment="Left" Content="Flip Forwards/Backwards" Height="30" Background="WhiteSmoke" Foreground="DarkGreen" Margin="5,5,0,0"></Label>
             <Slider VerticalAlignment="Top" Name="XRotationSlider" Minimum="-180" Maximum="180" Height="20" Background="WhiteSmoke" Margin="5,5,0,0"
@@ -42,7 +42,7 @@
                 <ModelVisual3D>
                     <ModelVisual3D.Content>
                         <Model3DGroup x:Name="AllModelsGroup">
-                            <GeometryModel3D>
+                            <GeometryModel3D x:Name="MapFront">
                                 <GeometryModel3D.Material>
                                     <DiffuseMaterial>
                                         <DiffuseMaterial.Brush>
@@ -54,7 +54,7 @@
                                     <MeshGeometry3D Positions="1,1,0 -1,1,0 -1,-1,0 1,-1,0" TriangleIndices="0,1,2 0,2,3" TextureCoordinates="1,0 0,0 0,1 1,1"/>
                                 </GeometryModel3D.Geometry>
                             </GeometryModel3D>
-                            <GeometryModel3D x:Name="Back">
+                            <GeometryModel3D x:Name="MapBack">
                                 <GeometryModel3D.Geometry>
                                     <MeshGeometry3D Positions="1,1,0 -1,1,0 -1,-1,0 1,-1,0" TriangleIndices="3,2,0 2,1,0"/>
                                 </GeometryModel3D.Geometry>
@@ -111,29 +111,29 @@
                 </ModelVisual3D>
             </Viewport3D.Children>
         </Viewport3D>
-        <StackPanel Background="LightGray" Grid.Row="1" Height="95" VerticalAlignment="Top" Margin="0,414,0,0" Grid.RowSpan="2">
+        <StackPanel Background="WhiteSmoke" Grid.Row="1" Height="95" VerticalAlignment="Top" Margin="0,414,0,0" Grid.RowSpan="2">
             <Canvas Height="95">
-                <Label Content="LEGEND" Foreground="DarkGreen"/>
+                <Label Content="LEGEND" Foreground="Black" FontWeight="ExtraBold"/>
                 <!-- Vertices legend -->
-                <Label Content="Vertices:" Canvas.Left="100"  Foreground="DarkGreen"/>
-                <Label Content="Substation - " Canvas.Left="159" Foreground="White"/>
+                <Label Content="Vertices:" Canvas.Left="100"  Foreground="Black" FontWeight="Bold"/>
+                <Label Content="Substation - " Canvas.Left="159" Foreground="DarkGreen"/>
                 <Ellipse Fill="Green" Canvas.Left="242" Canvas.Top="8" Height="10" Width="10"/>
-                <Label Content="Node - " Canvas.Left="186" Canvas.Top="31" Foreground="White"/>
+                <Label Content="Node - " Canvas.Left="186" Canvas.Top="31" Foreground="DarkGreen"/>
                 <Ellipse Fill="Red" Canvas.Left="242" Canvas.Top="40" Height="10" Width="10"/>
-                <Label Content="Switch - " Canvas.Left="181" Canvas.Top="62" Foreground="White"/>
+                <Label Content="Switch - " Canvas.Left="181" Canvas.Top="62" Foreground="DarkGreen"/>
                 <Ellipse Fill="Black" Canvas.Left="242" Canvas.Top="71" Height="10" Width="10"/>
                 <!-- Edges legend -->
-                <Label Content="Edges:" Canvas.Left="310"  Foreground="DarkGreen"/>
-                <Label Content="Steel - " Canvas.Left="359" Foreground="White"/>
-                <Ellipse Fill="DarkGray" Canvas.Left="411" Canvas.Top="8" Height="10" Width="10"/>
-                <Label Content="Acsr - " Canvas.Left="362" Canvas.Top="31" Foreground="White"/>
-                <Ellipse Fill="Green" Canvas.Left="411" Canvas.Top="40" Height="10" Width="10"/>
-                <Label Content="Copper - " Canvas.Left="346" Canvas.Top="62" Foreground="White"/>
-                <Ellipse Fill="Orange" Canvas.Left="411" Canvas.Top="71" Height="10" Width="10"/>
-                <Label Content="Other - " Canvas.Left="453" Foreground="White"/>
-                <Ellipse Fill="Purple" Canvas.Left="510" Canvas.Top="8" Height="10" Width="10"/>
-                <Label Content="Default - " Canvas.Left="445" Canvas.Top="31" Foreground="White"/>
-                <Ellipse Fill="Black" Canvas.Left="510" Canvas.Top="40" Height="10" Width="10"/>
+                <Label Content="Edges:" Canvas.Left="310"  Foreground="Black" FontWeight="Bold"/>
+                <Label Content="Copper - " Canvas.Left="361" Foreground="DarkGreen"/>
+                <Ellipse Fill="Orange" Canvas.Left="426" Canvas.Top="10" Height="10" Width="10"/>
+                <Label Content="Steel - " Canvas.Left="374" Canvas.Top="62" Foreground="DarkGreen"/>
+                <Ellipse Fill="DarkGray" Canvas.Left="426" Canvas.Top="71" Height="10" Width="10"/>
+                <Label Content="Acsr - " Canvas.Left="377" Canvas.Top="31" Foreground="DarkGreen"/>
+                <Ellipse Fill="Green" Canvas.Left="426" Canvas.Top="40" Height="10" Width="10"/>
+                <Label Content="Other - " Canvas.Left="469" Foreground="DarkGreen"/>
+                <Ellipse Fill="Purple" Canvas.Left="526" Canvas.Top="8" Height="10" Width="10"/>
+                <Label Content="Default - " Canvas.Left="461" Canvas.Top="31" Foreground="DarkGreen"/>
+                <Ellipse Fill="Black" Canvas.Left="526" Canvas.Top="40" Height="10" Width="10"/>
             </Canvas>
         </StackPanel>
         <TextBlock x:Name="ToolTipTextBlock" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" Text="" Visibility="Visible" TextAlignment="Center" Background="WhiteSmoke" Foreground="Green" Width="200" HorizontalAlignment="Left" Margin="10,5,0,354" Grid.Row="1"/>
